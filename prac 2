@@ -1,0 +1,55 @@
+//write a program to insert an number in array of size n (at beg , at end and at sp)
+#include<stdio.h>
+void main(){
+    int ds[10],pos,val;
+    printf("enter any 9 array elements : ");
+    for(int i=0;i<9;i++){
+        scanf("%d",&ds[i]);
+    }
+    printf("enter postion to insert : ");
+    scanf("%d",&pos);
+    printf("enter element you want to insert : ");
+    scanf("%d",&val);
+    for(int i=8;i>=pos;i--){
+        ds[i+1] = ds[i];
+    }
+    ds[pos]= val;
+    printf("after insert : ");
+    for(int i=0;i<10;i++){
+        printf("%d ",ds[i]);
+    }
+}
+
+
+
+
+ //write a program to delete an element of an array of size n ( at beg, at end and at sp)
+#include <stdio.h>
+void main() {
+    int ds[5], ele, idx = 5; 
+    printf("Enter array elements: ");
+    for (int i = 0; i < 5; i++) {
+        scanf("%d", &ds[i]);
+    }  
+    printf("Enter element to remove: ");
+    scanf("%d", &ele);
+    int i;
+    for (i = 0; i < idx; i++) {
+        if (ds[i] == ele) {
+            break;
+        }
+    }
+    if (i < idx) { 
+        for (int j = i; j < idx - 1; j++) {
+            ds[j] = ds[j + 1]; 
+        }
+        idx--; 
+    } else {
+        printf("Element not found.\n");
+    }
+    printf("Updated array: ");
+    for (int i = 0; i < idx; i++) {
+        printf("%d ", ds[i]);
+    }
+    printf("\n");
+}
