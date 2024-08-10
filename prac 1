@@ -1,0 +1,49 @@
+//take 10 number from the user and write a program to search a specific number , if present in array or not.
+#include<stdio.h>
+void main(){
+    int num[10],n,found=0;
+    printf("enter 10 array element : ");
+    for(int i=0;i<10;i++){
+        scanf("%d",&num[i]);
+    }
+    printf("enter specific element you want to search : ");
+    scanf("%d",&n);
+    for(int i=0;i<10;i++){
+        if(n==num[i]){
+            found =1;
+            printf("%d found at %d",n,i+1);
+        }
+    }
+    if(found==0){
+        printf("%d element is not found",n);
+    }
+}
+
+
+//create an array of any size write a program to update or modifie same elements from array.
+#include<stdio.h>
+void main(){
+    int arr[100],n,num1,num2,temp;
+    printf("enter no of element you want in array : ");
+    scanf("%d",&n);
+    printf("enter array elements : ");
+    for(int i=0;i<n;i++){
+        scanf("%d",&arr[i]);
+    }
+    printf("enter new element : ");
+    scanf("%d",&num1);
+    printf("enter array element you want to update : ");
+    scanf("%d",&num2);
+    for(int i=0;i<n;i++){
+        if(num2==arr[i]){
+            temp = arr[i];
+            arr[i]=num1;
+            num1 = temp;
+        }
+    }
+    printf("updated array : ");
+    for(int i=0;i<n;i++){
+        printf("%d ",arr[i]);
+    }
+}
+
