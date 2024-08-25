@@ -1,0 +1,161 @@
+//linked list creation
+#include<stdio.h>
+#include<malloc.h>
+struct node{
+    int data;
+    struct node *next;
+};
+void main(){
+    struct node *x,*y,*z,*w;
+    x = (struct node*)malloc(sizeof(struct node));
+    y = (struct node*)malloc(sizeof(struct node));
+    z = (struct node*)malloc(sizeof(struct node));
+    w = (struct node*)malloc(sizeof(struct node));  
+    x->data = 5;
+    x->next = y;   
+    y->data = 10;
+    y->next = z;  
+    z->data = 25;
+    z->next = w;
+    w->data = 30;
+    w->next = NULL;
+    struct node *temp = x; 
+    while(temp != NULL) {
+        printf("Value = %d, Address = %p\n", temp->data, temp->next);
+        temp = temp->next; 
+    }
+}
+
+
+
+// linked list insertion ( at beg, at end , at specific position )
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int data;
+    struct node *next;
+};
+void insertAtPosition(struct node **head, int position, int newData) {
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->data = newData;
+    if (position == 1) {
+        newNode->next = *head;
+        *head = newNode;
+        return;
+    }
+    struct node *temp = *head;
+    for (int i = 1; i < position - 1 && temp != NULL; i++) {
+        temp = temp->next;
+    }
+    if (temp == NULL) {
+        printf("Position out of bounds\n");
+        free(newNode); 
+        return;
+    }
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+void printList(struct node *head) {
+    struct node *temp = head;
+    while (temp != NULL) {
+        printf("Value = %d, Address = %p\n", temp->data, temp->next);
+        temp = temp->next;
+    }
+}
+void main() {
+    struct node *head = NULL;
+    struct node *second = NULL;
+    struct node *third = NULL;
+    struct node *fourth = NULL;
+    struct node *fifth = NULL;
+    head = (struct node*)malloc(sizeof(struct node));
+    second = (struct node*)malloc(sizeof(struct node));
+    third = (struct node*)malloc(sizeof(struct node));
+    fourth = (struct node*)malloc(sizeof(struct node));
+    fifth = (struct node*)malloc(sizeof(struct node));
+    head->data = 5;
+    head->next = second;
+    second->data = 10;
+    second->next = third;
+    third->data = 25;
+    third->next = fourth;
+    fourth->data = 30;
+    fourth->next = fifth;
+    fifth->data = 50;
+    fifth->next = NULL;
+    int position, data;
+    printf("Initial Linked List:\n");
+    printList(head);
+    printf("\nEnter the position to insert the new data: ");
+    scanf("%d", &position);
+    printf("Enter the data to insert at position %d: ", position);
+    scanf("%d", &data);
+    insertAtPosition(&head, position, data);
+    printf("\nUpdated Linked List:\n");
+    printList(head);
+}
+
+
+// delete linked list 
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int data;
+    struct node *next;
+};
+void deleteByKey(struct node *head, int key) {
+    struct node *temp = head;
+    struct node *prev = NULL;
+    if (temp != NULL && temp->data == key) {
+        head = temp->next; 
+        free(temp); 
+        return;
+    }
+    while (temp != NULL && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL) {
+        printf("Key not found\n");
+        return;
+    }
+    prev->next = temp->next;
+    free(temp); 
+}
+void printList(struct node *head) {
+    struct node *temp = head;
+    while (temp != NULL) {
+        printf("Value = %d, Address = %p\n", temp->data, temp->next);
+        temp = temp->next;
+    }
+}
+void main() {
+    struct node *head = NULL;
+    struct node *second = NULL;
+    struct node *third = NULL;
+    struct node *fourth = NULL;
+    struct node *fifth = NULL;
+    head = (struct node*)malloc(sizeof(struct node));
+    second = (struct node*)malloc(sizeof(struct node));
+    third = (struct node*)malloc(sizeof(struct node));
+    fourth = (struct node*)malloc(sizeof(struct node));
+    fifth = (struct node*)malloc(sizeof(struct node));
+    head->data = 5;
+    head->next = second;
+    second->data = 10;
+    second->next = third;
+    third->data = 25;
+    third->next = fourth;
+    fourth->data = 30;
+    fourth->next = fifth;
+    fifth->data = 50;
+    fifth->next = NULL;
+    int key;
+    printf("Initial Linked List:\n");
+    printList(head);
+    printf("\nEnter the key value of the element to delete: ");
+    scanf("%d", &key);
+    deleteByKey(head, key);
+    printf("\nUpdated Linked List:\n");
+    printList(head);
+}
