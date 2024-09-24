@@ -1,0 +1,51 @@
+/* stack implimentation , impliment stack data structure using array 
+demostrate the stack opretion such as push pop and print 
+ create a menu 1 push 2 pop 3 print , default */
+#include<stdio.h>
+#define n 5
+int stack[n];
+int top =-1;
+void push(){//insert data in stack
+    int x;
+    printf("enter data : ");
+    scanf("%d",&x);
+    if(top== n-1){
+        printf("overflow");
+    }else{
+        top++;
+        stack[top] = x;
+    }
+}
+void pop(){
+    int item;
+    if(top==-1){
+        printf("underflow");
+    }else{
+        item = stack[top];
+        top--;
+        printf("%d",item);
+    }
+    printf("\n");
+}
+void print(){
+    for(int i=0;i<=top;i++){
+        printf("%d ",stack[i]);
+    }
+    printf("\n");
+}
+void main(){
+    int ch;
+    do{
+        printf("enter choice :  1 for push , 2 for pop , 3 for print  ");
+        scanf("%d",&ch);
+        switch (ch){
+        case 1 : push();
+        break;
+        case 2 : pop();
+        break;
+        case 3 : print();
+        break;
+        default : printf("invalid choice");
+        }
+    }while(ch!=0);
+}
