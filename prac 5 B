@@ -1,0 +1,67 @@
+//implement the stack using linked list
+#include<stdio.h>
+#include<malloc.h>
+struct node{
+    int data; 
+    struct node* next;
+};
+struct node *top = 0;
+void push(){
+    int x ;
+    printf("enter x data : ");
+    scanf("%d",&x);
+    struct node*newnode ;
+    newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = x;
+    newnode->next = top;
+    top = newnode;
+}
+void display(){
+    struct node *temp = top;
+    if(temp == 0){
+        printf("stack is empty");
+    }else{
+        printf("stack element are : ");
+        while(temp!=0){
+            printf("%d ",temp->data);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}
+void peek(){
+    if(top == 0){
+        printf("top is empty");
+    }else{
+        printf("top elements is %d\n",top->data);
+    }
+}
+void pop(){
+    struct node*temp;
+    temp = top;
+    if(top == 0){
+        printf("there is no need in the list ");
+    }else{
+        printf("the pop elemets is %d\n",top->data);
+        top = top->next;
+        free(temp);
+    }
+}
+void main(){
+    int ch;
+    do{
+        printf("enter choice :  1 for push , 2 for pop , 3 for peek , 4 for display :  ");
+        scanf("%d",&ch);
+        switch (ch){
+        case 1 : push();
+        break;
+        case 2 : pop();
+        break;
+        case 3 : peek();
+        break;
+        case 4 : display();
+        break;
+        default : printf("invalid choice");
+        }
+    }while(ch!=0);
+}
