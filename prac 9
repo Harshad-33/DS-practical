@@ -1,0 +1,150 @@
+//by chaining
+#include <stdio.h>
+#include <stdlib.h>
+#define TABLE_SIZE 10
+typedef struct Node {
+    int key;
+    struct Node* next;
+} Node;
+Node* hashTable[TABLE_SIZE];
+int hashFunction(int key) {
+    return key % TABLE_SIZE;
+}
+void insertChaining(int key) {
+    int index = hashFunction(key);
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->key = key;
+    newNode->next = hashTable[index];
+    hashTable[index] = newNode;
+}
+int searchChaining(int key) {
+    int index = hashFunction(key);
+    Node* temp = hashTable[index];
+    while (temp) {
+        if (temp->key == key) {
+            return 1;
+        }
+        temp = temp->next;
+    }
+    return 0; 
+}
+void deleteChaining(int key) {
+    int index = hashFunction(key);
+    Node* temp = hashTable[index];
+    Node* prev = NULL;
+    while (temp) {
+        if (temp->key == key) {
+            if (prev) {
+                prev->next = temp->next;
+            } else {
+                hashTable[index] = temp->next;
+            }
+            free(temp);
+            printf("Key %d deleted.\n", key);
+            return;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+    printf("Key %d not found.\n", key);
+}
+void displayChaining() {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        printf("Index %d: ", i);
+        Node* temp = hashTable[i];
+        while (temp) {
+            printf("%d -> ", temp->key);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
+}
+int main() {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        hashTable[i] = NULL;
+    }
+    insertChaining(10);
+    insertChaining(20);
+    insertChaining(30);
+    insertChaining(40);
+    displayChaining();
+    printf("Search 20: %s\n", searchChaining(20) ? "Found" : "Not Found");
+    deleteChaining(20);
+    displayChaining();
+    return 0;
+}
+
+// by Open Addressing
+#include <stdio.h>
+#include <stdlib.h>
+#define TABLE_SIZE 10
+#define EMPTY -1
+int hashTable[TABLE_SIZE];
+int hashFunction(int key) {
+    return key % TABLE_SIZE;
+}
+void insertOpenAddressing(int key) {
+    int index = hashFunction(key);
+    int originalIndex = index;
+    while (hashTable[index] != EMPTY) {
+        index = (index + 1) % TABLE_SIZE;
+        if (index == originalIndex) {
+            printf("Hash table is full.\n");
+            return;
+        }
+    }
+    hashTable[index] = key; 
+}
+int searchOpenAddressing(int key) {
+    int index = hashFunction(key);
+    int originalIndex = index;
+    while (hashTable[index] != EMPTY) {
+        if (hashTable[index] == key) {
+            return 1; 
+        }
+        index = (index + 1) % TABLE_SIZE;
+        if (index == originalIndex) {
+            break;
+        }
+    }
+    return 0; 
+}
+void deleteOpenAddressing(int key) {
+    int index = hashFunction(key);
+    int originalIndex = index;
+    while (hashTable[index] != EMPTY) {
+        if (hashTable[index] == key) {
+            hashTable[index] = EMPTY;
+            printf("Key %d deleted.\n", key);
+            return;
+        }
+        index = (index + 1) % TABLE_SIZE;
+        if (index == originalIndex) {
+            break;
+        }
+    }
+    printf("Key %d not found.\n", key);
+}
+void displayOpenAddressing() {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        if (hashTable[i] == EMPTY) {
+            printf("Index %d: EMPTY\n", i);
+        } else {
+            printf("Index %d: %d\n", i, hashTable[i]);
+        }
+    }
+}
+int main() {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        hashTable[i] = EMPTY;
+    }
+    insertOpenAddressing(10);
+    insertOpenAddressing(20);
+    insertOpenAddressing(30);
+    insertOpenAddressing(40);
+    displayOpenAddressing();
+    printf("Search 20: %s\n", searchOpenAddressing(20) ? "Found" : "Not Found");
+    deleteOpenAddressing(20);
+    displayOpenAddressing();
+    return 0;
+}
