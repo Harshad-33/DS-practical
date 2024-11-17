@@ -1,0 +1,135 @@
+//Pra10 :Graph Representation
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+void adjacencyMatrix(int vertices, int edges, int matrix[vertices][vertices]) {
+    for (int i = 0; i < edges; i++) {
+        int u, v;
+        printf("Enter edge (u, v): ");
+        scanf("%d %d", &u, &v);
+        matrix[u][v] = 1;
+        matrix[v][u] = 1; 
+    }
+}
+void printMatrix(int vertices, int matrix[vertices][vertices]) {
+    printf("Adjacency Matrix:\n");
+    for (int i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+typedef struct Graph {
+    int vertices;
+    Node** adjLists;
+    bool* visited;
+} Graph;
+Node* createNode(int vertex) {
+    Node* newNode = malloc(sizeof(Node));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
+Graph* createGraph(int vertices) {
+    Graph* graph = malloc(sizeof(Graph));
+    graph->vertices = vertices;
+    graph->adjLists = malloc(vertices * sizeof(Node*));
+    graph->visited = malloc(vertices * sizeof(bool));
+    for (int i = 0; i < vertices; i++) {
+        graph->adjLists[i] = NULL;
+        graph->visited[i] = false;
+    }
+    return graph;
+}
+void addEdge(Graph* graph, int src, int dest) {
+    Node* newNode = createNode(dest);
+    newNode->next = graph->adjLists[src];
+    graph->adjLists[src] = newNode;
+    newNode = createNode(src);
+    newNode->next = graph->adjLists[dest];
+    graph->adjLists[dest] = newNode;
+}
+void printGraph(Graph* graph) {
+    printf("Adjacency List:\n");
+    for (int i = 0; i < graph->vertices; i++) {
+        Node* temp = graph->adjLists[i];
+        printf("Vertex %d: ", i);
+        while (temp) {
+            printf("%d -> ", temp->vertex);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
+}
+void bfs(Graph* graph, int startVertex) {
+    int queue[100], front = -1, rear = -1;
+    graph->visited[startVertex] = true;
+    queue[++rear] = startVertex;
+    printf("BFS Traversal: ");
+    while (front != rear) {
+        int currentVertex = queue[++front];
+        printf("%d ", currentVertex);
+        Node* temp = graph->adjLists[currentVertex];
+        while (temp) {
+            int adjVertex = temp->vertex;
+            if (!graph->visited[adjVertex]) {
+                graph->visited[adjVertex] = true;
+                queue[++rear] = adjVertex;
+            }
+            temp = temp->next;
+        }
+    }
+    printf("\n");
+}
+void dfs(Graph* graph, int vertex) {
+    Node* adjList = graph->adjLists[vertex];
+    Node* temp = adjList;
+    graph->visited[vertex] = true;
+    printf("%d ", vertex);
+    while (temp != NULL) {
+        int connectedVertex = temp->vertex;
+        if (!graph->visited[connectedVertex]) {
+            dfs(graph, connectedVertex);
+        }
+        temp = temp->next;
+    }
+}
+int main() {
+    int vertices, edges;
+    printf("Enter number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter number of edges: ");
+    scanf("%d", &edges);
+    int matrix[vertices][vertices];
+    for (int i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            matrix[i][j] = 0;
+        }
+    }
+    adjacencyMatrix(vertices, edges, matrix);
+    printMatrix(vertices, matrix);
+    Graph* graph = createGraph(vertices);
+    printf("Enter edges for adjacency list representation:\n");
+    for (int i = 0; i < edges; i++) {
+        int u, v;
+        printf("Enter edge (u, v): ");
+        scanf("%d %d", &u, &v);
+        addEdge(graph, u, v);
+    }
+    printGraph(graph);
+    printf("Performing BFS starting from vertex 0:\n");
+    bfs(graph, 0);
+    for (int i = 0; i < vertices; i++) {
+        graph->visited[i] = false;
+    }
+    printf("Performing DFS starting from vertex 0:\n");
+    dfs(graph, 0);
+    printf("\n");
+    return 0;
+}
