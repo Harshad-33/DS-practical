@@ -1,0 +1,82 @@
+//implimentation of queue by using linked list[add , delete , print and exit]
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* next;
+};
+struct Node* front = NULL;
+struct Node* rear = NULL;
+void enqueue(int x) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory overflow\n");
+        return;
+    }
+    newNode->data = x;
+    newNode->next = NULL;
+    
+    if (front == NULL && rear == NULL) {  
+        front = rear = newNode;
+    } else {
+        rear->next = newNode;
+        rear = newNode;
+    }
+    printf("%d added to the queue.\n", x);
+}
+void dequeue() {
+    if (front == NULL) {
+        printf("Queue is empty\n");
+        return;
+    }
+    struct Node* temp = front;
+    printf("Dequeued: %d\n", temp->data);
+    front = front->next;
+    if (front == NULL) {  
+        rear = NULL;
+    }
+    free(temp);
+}
+void display() {
+    if (front == NULL) {
+        printf("Queue is empty\n");
+        return;
+    }
+    struct Node* temp = front;
+    printf("Queue elements: ");
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+int main() {
+    int choice, value;
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Add\n");
+        printf("2. Delete\n");
+        printf("3. Print\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter the value to enqueue: ");
+                scanf("%d", &value);
+                enqueue(value);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                printf("Exiting...\n");
+                return 0;
+            default:
+                printf("Invalid choice.\n");
+        }
+    }
+}
